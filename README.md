@@ -110,12 +110,12 @@ Removes an order from the book. Returns true if successful.
 #### Market Data
 
 ```cpp
-std::optional<Price> getBestBid()    // Highest buy price
-std::optional<Price> getBestAsk()    // Lowest sell price
-std::optional<Price> getSpread()     // Ask - Bid
-std::optional<Price> getMidPrice()   // (Bid + Ask) / 2
-Price getLastTradePrice()
-Quantity getLastTradeQty()
+Price getBestBid()         // Highest buy price (returns 0 if no bids)
+Price getBestAsk()         // Lowest sell price (returns 0 if no asks)
+Price getSpread()          // Ask - Bid
+Price getMidPrice()        // (Bid + Ask) / 2 (returns 0 if empty)
+Price getLastTradePrice()  // Most recent trade price
+Quantity getLastTradeQty() // Most recent trade quantity
 ```
 
 #### Snapshots
@@ -178,9 +178,9 @@ int main() {
     auto bestBid = book.getBestBid();
     auto bestAsk = book.getBestAsk();
 
-    if (bestBid && bestAsk) {
-        std::cout << "Bid: " << priceToString(*bestBid) << std::endl;
-        std::cout << "Ask: " << priceToString(*bestAsk) << std::endl;
+    if (bestBid != 0 && bestAsk != 0) {
+        std::cout << "Bid: " << priceToString(bestBid) << std::endl;
+        std::cout << "Ask: " << priceToString(bestAsk) << std::endl;
     }
 
     return 0;
